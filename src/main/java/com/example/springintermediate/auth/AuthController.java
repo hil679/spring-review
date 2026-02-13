@@ -7,10 +7,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -66,10 +63,10 @@ public class AuthController {
         return session.getAttribute(AUTHORIZATION_HEADER).toString();
     }
 
-    @GetMapping("/create-jwt")
-    public String createJwt(HttpServletResponse res) {
+    @GetMapping("/create-jwt/{username}")
+    public String createJwt(HttpServletResponse res, @PathVariable String username) {
 // Jwt 생성
-        String token = jwtUtil.createJwtToken("Robbie", UserRoleEnum.USER);
+        String token = jwtUtil.createJwtToken(username, UserRoleEnum.USER);
 // Jwt 쿠키 저장
         jwtUtil.addJwtToCookie(token, res);
         return "createJwt : " + token;
