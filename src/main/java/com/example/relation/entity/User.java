@@ -17,6 +17,12 @@ public class User {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "user")
+    // User Entity를 저장할 때 연관된 Food Entity까지 자동으로 저장
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     List<Food> foodList = new ArrayList<>();
+
+    public void addFoodList(Food food) {
+        foodList.add(food);
+        food.setUser(this); //외래키 설정
+    }
 }
